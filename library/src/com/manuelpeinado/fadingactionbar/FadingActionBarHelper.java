@@ -18,16 +18,20 @@ package com.manuelpeinado.fadingactionbar;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.view.Window;
 
 public class FadingActionBarHelper extends FadingActionBarHelperBase {
 
     private ActionBar mActionBar;
+    private Window mWindow;
 
     @SuppressLint("NewApi")
     @Override
     public void initActionBar(Activity activity) {
         mActionBar = activity.getActionBar();
+        mWindow = activity.getWindow();
         super.initActionBar(activity);
     }
 
@@ -35,6 +39,20 @@ public class FadingActionBarHelper extends FadingActionBarHelperBase {
     @Override
     protected int getActionBarHeight() {
         return mActionBar.getHeight();
+    }
+    
+    @Override
+    protected int getWindowHeight() {
+    	Rect rectgle = new Rect();
+    	mWindow.getDecorView().getWindowVisibleDisplayFrame(rectgle);
+        return rectgle.height();
+    }
+    
+    @Override
+    protected int getWindowWidth() {
+    	Rect rectgle = new Rect();
+    	mWindow.getDecorView().getWindowVisibleDisplayFrame(rectgle);
+        return rectgle.width();
     }
 
     @Override
