@@ -57,4 +57,12 @@ public class ObservableScrollView extends ScrollView implements ObservableScroll
     public void setOnScrollChangedCallback(OnScrollChangedCallback callback) {
         mOnScrollChangedListener = callback;
     }
+    
+    @Override
+	protected void onSizeChanged(final int w, final int h, final int oldw, final int oldh) {
+    	super.onSizeChanged(w, h, oldw, oldh);
+    	if (mOnScrollChangedListener != null) {
+            mOnScrollChangedListener.onResize(w, h, oldw, oldh);
+        }
+    }
 }

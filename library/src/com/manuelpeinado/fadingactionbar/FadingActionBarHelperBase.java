@@ -24,6 +24,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.MeasureSpec;
@@ -55,7 +56,7 @@ public abstract class FadingActionBarHelperBase {
     private LayoutInflater mInflater;
     private boolean mLightActionBar;
     private boolean mUseParallax = true;
-    private int mLastDampedScroll;
+    private int mLastDampedScroll = 0;
     private int mLastHeaderHeight = -1;
     private FrameLayout mMarginView;
     private View mListViewBackgroundView;
@@ -180,8 +181,7 @@ public abstract class FadingActionBarHelperBase {
             public void onGlobalLayout() {
                 updateHeaderHeight(mHeaderContainer.getHeight());
                 int minHeight = mRootView.getHeight() - ((mHeaderView.getHeight()==0)?getActionBarHeight():mHeaderView.getHeight());
-                if (mContentView.getHeight() < minHeight)
-                {
+                if (mContentView.getHeight() < minHeight) {
                 	ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) mContentView.getLayoutParams();               
                 	params.height = minHeight;                    
                 	mContentView.setLayoutParams(params);
@@ -293,9 +293,16 @@ public abstract class FadingActionBarHelperBase {
     }
 
     private OnScrollChangedCallback mOnScrollChangedListener = new OnScrollChangedCallback() {
-        public void onScroll(int l, int t) {
+    	@Override
+    	public void onScroll(int l, int t) {
             onNewScroll(t);
         }
+
+		@Override
+		public void onResize(int w, int h, int oldw, int oldh) {
+			Log.e("onResize", "width:"+w+" height:"+h+" oldwidth:"+oldw+" oldheight"+oldh);	
+			onNewSize(w, h);
+		}		
     };
 
     private View createListView(ListView listView) {
@@ -339,7 +346,7 @@ public abstract class FadingActionBarHelperBase {
         public void onScrollStateChanged(AbsListView view, int scrollState) {
         }
     };
-    private int mLastScrollPosition;
+    private int mLastScrollPosition = 0;
 
     private void onNewScroll(int scrollPosition) {
     	if (isActionBarNull() || !mActive) {
@@ -365,12 +372,21 @@ public abstract class FadingActionBarHelperBase {
         addParallaxEffect(scrollPosition);
     }
 
+    private void onNewSize(int width, int height) {
+    	int headerHeight = mActive?mHeaderView.getHeight():0;
+        int minHeight = height - (mActive?headerHeight:getActionBarHeight());
+        
+        mContentView.setMinimumHeight(mEmptyView?0:minHeight);
+    }
+
     private void addParallaxEffect(int scrollPosition) {
+    	    	
         float damping = mUseParallax ? 0.5f : 1.0f;
         int dampedScroll = (int) (scrollPosition * damping);
         int offset = mLastDampedScroll - dampedScroll;
         mHeaderContainer.offsetTopAndBottom(offset);
 
+        
         if (mListViewBackgroundView != null) {
             offset = mLastScrollPosition - scrollPosition;
             mListViewBackgroundView.offsetTopAndBottom(offset);
