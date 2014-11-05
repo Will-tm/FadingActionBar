@@ -22,47 +22,54 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.Window;
 
-public class FadingActionBarHelper extends FadingActionBarHelperBase {
+public class FadingActionBarHelper extends FadingActionBarHelperBase
+{
 
-    private ActionBar mActionBar;
-    private Window mWindow;
+	private ActionBar mActionBar;
+	private Window mWindow;
 
-    @SuppressLint("NewApi")
-    @Override
-    public void initActionBar(Activity activity) {
-        mActionBar = activity.getActionBar();
-        mWindow = activity.getWindow();
-        super.initActionBar(activity);
-    }
+	@SuppressLint("NewApi")
+	@Override
+	public void initActionBar(Activity activity)
+	{
+		mActionBar = activity.getActionBar();
+		mWindow = activity.getWindow();
+		super.initActionBar(activity);
+	}
 
-    @SuppressLint("NewApi")
-    @Override
-    protected int getActionBarHeight() {
-        return mActionBar.getHeight();
-    }
-    
-    @Override
-    protected int getWindowHeight() {
-    	Rect rectgle = new Rect();
-    	mWindow.getDecorView().getWindowVisibleDisplayFrame(rectgle);
-        return rectgle.height();
-    }
-    
-    @Override
-    protected int getWindowWidth() {
-    	Rect rectgle = new Rect();
-    	mWindow.getDecorView().getWindowVisibleDisplayFrame(rectgle);
-        return rectgle.width();
-    }
+	@SuppressLint("NewApi")
+	@Override
+	protected int getActionBarHeight()
+	{
+		return mActionBar.getHeight();
+	}
 
-    @Override
-    protected boolean isActionBarNull() {
-        return mActionBar == null;
-    }
+	@Override
+	protected int getWindowHeight()
+	{
+		Rect rectgle = new Rect();
+		mWindow.getDecorView().getWindowVisibleDisplayFrame(rectgle);
+		return rectgle.height();
+	}
 
-    @SuppressLint("NewApi")
-    @Override
-    protected void setActionBarBackgroundDrawable(Drawable drawable) {
-        mActionBar.setBackgroundDrawable(drawable);
-    }
+	@Override
+	protected int getWindowWidth()
+	{
+		Rect rectgle = new Rect();
+		mWindow.getDecorView().getWindowVisibleDisplayFrame(rectgle);
+		return rectgle.width();
+	}
+
+	@Override
+	protected boolean isActionBarNull()
+	{
+		return mActionBar == null;
+	}
+
+	@SuppressLint("NewApi")
+	@Override
+	protected void setActionBarBackgroundDrawable(Drawable drawable)
+	{
+		mActionBar.setBackgroundDrawable(drawable);
+	}
 }
