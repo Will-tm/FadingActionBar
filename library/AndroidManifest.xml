@@ -5,8 +5,8 @@
     android:versionName="3.1.0" >
 
     <uses-sdk
-        android:minSdkVersion="16"
-        android:targetSdkVersion="19" />
+        android:minSdkVersion="18"
+        android:targetSdkVersion="20" />
 
     <application tools:ignore="AllowBackup"/>
 </manifest>
